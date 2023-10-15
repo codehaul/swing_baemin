@@ -1,0 +1,60 @@
+drop table member cascade constraints;
+create table member(
+  id varchar2(20) primary key,
+  pw varchar2(20) not null,
+  name varchar2(15) not null,
+  birth date default sysdate,
+  gender varchar2(10),
+  email varchar2(30),
+  phone varchar2(20),
+  mem_role varchar2(10)
+);
+
+select * from member;
+
+insert into member values('sqlid', 'sqlpw', '민혁', '2000-01-01', '남자', 'alsgur@gmail.com', '01012345678', '구매자');
+insert into member values('sqlid2', 'sqlpw', '민혁', '2000-01-01', '남자', 'alsgur@gmail.com', '01012345678', '판매자');
+insert into member values('a', 'a', '민혁', '2000-01-01', '남자', 'alsgur@gmail.com', '01012345678', '판매자');
+commit;
+
+drop table store;
+create table store(
+  id varchar2(20) references member(id) on delete set null,
+  storeName varchar2(30),
+  foodType varchar2(30) not null,
+  priceAvg number not null,
+  storeLocation varchar2(100) not null,
+  callNum varchar2(20),
+  reviewCnt number not null,
+  img varchar2(200) default ''
+);
+
+insert into store values('sqlid2', '장독대식당', '한식', 9000, '서울 마포구 월드컵북로5길 21', '023334761', 182, 'images/jang.jpg');
+insert into store values('sqlid2', '키토분식', '분식', 5000, '서울 마포구 동교로 187', '0507136', 346, 'images/kito.jpg');
+insert into store values('sqlid2', '고쿠텐', '일식', 15000, '서울 마포구 월드컵북로4길 26', '0507133', 1496, 'images/koku.jpg');
+commit;
+select * from store;
+
+drop table menu;
+create table menu(
+  id references member(id) on delete set null,
+  storeName varchar2(30),
+  menuName varchar2(50) not null,
+  price number not null,
+  sidedishCnt number not null,
+  taste varchar2(30) not null,
+  mainIngredient varchar2(50) not null
+);
+
+insert into menu values('sqlid2', '장독대식당', '김치전골', 18000, 3, '매운맛', '김치');
+insert into menu values('sqlid2', '장독대식당', '부대찌개', 18000, 4, '매운맛', '햄');
+insert into menu values('sqlid2', '장독대식당', '쌈밥정식', 12000, 6, '구수한맛', '솥밥');
+insert into menu values('sqlid2', '키토분식', '햄야채김밥', 4300, 1, '다채로운맛', '햄');
+insert into menu values('sqlid2', '키토분식', '우삼겹떡볶이', 8500, 1, '매운맛', '떡');
+insert into menu values('sqlid2', '키토분식', '라면', 4500, 2, '매운맛', '면');
+insert into menu values('sqlid2', '고쿠텐', '고쿠텐동', 13000, 2, '느끼한맛', '새우');
+insert into menu values('sqlid2', '고쿠텐', '장어텐동', 18000, 2, '담백한맛', '장어');
+insert into menu values('sqlid2', '고쿠텐', '카레텐동', 15000, 2, '담백한맛', '카레');
+
+commit;
+select * from menu;
